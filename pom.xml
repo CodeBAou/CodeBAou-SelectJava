@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>codebaou</groupId>
+    <artifactId>SelectJava</artifactId>
+    <version>1.0</version>
+    
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>18</maven.compiler.source>
+        <maven.compiler.target>18</maven.compiler.target>
+        <exec.mainClass>codebaou.selectjava.Init</exec.mainClass>
+    </properties>
+    
+    <name>codebaou_selectjava</name>
+    
+    <dependencies>
+        <!-- Dependencia Interfaz I_Plugin -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>codebaou.interfaces</groupId>
+            <artifactId>I_Plugin</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>plugins</groupId>
+            <artifactId>NETBEANS</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
+    
+    <description>Esta aplicacion permite instalar y cambiar de forma rápida distintas versiones 
+de java. A continuacion se listan la funciones que puede realizar:
+
+- Permite ver informacion importante de java.
+
+- Permite seleccionar una version de java que tengas incluido en la carpeta javas\
+   y instalarla en el equipo.
+
+- Incluye un Plugin para configurar una version de jdk para el editor Netbeans.
+
+- Permite ampliar funcionalidades mediante plugins.
+
+
+			codebaou
+	</description>
+</project>
