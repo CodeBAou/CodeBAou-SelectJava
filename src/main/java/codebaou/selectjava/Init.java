@@ -92,10 +92,9 @@ public class Init {
         }
         else
         {
-           
             //SIN PERMISOS DE ADMINISTRADOR
             int input = JOptionPane.showOptionDialog(null, "Se necesitan permisos de administrador para que la aplicacion funcione", "Info ",JOptionPane.CLOSED_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-            if(input == JOptionPane.OK_OPTION ){
+            if( input == JOptionPane.OK_OPTION ){
                 System.exit(0);//Fin Programa
             }
             
@@ -288,16 +287,24 @@ public class Init {
         interfaz.Set_MensajesUsuario_Conf( System.getProperty( "os.name" ) );
         ArrayList<String> jdkinfo = Windows_System.Get_Version_Java_System();
         
-        if( jdkinfo.size() > 0 ){
-            for( int i=0; i<jdkinfo.size(); i++ )
+        if( jdkinfo != null ){
+            if( jdkinfo.size() > 0 ){
+                for( int i=0; i<jdkinfo.size(); i++ )
+                {
+                    interfaz.Set_MensajesUsuario_Conf( jdkinfo.get(i) );
+                }
+            }else
             {
-                interfaz.Set_MensajesUsuario_Conf( jdkinfo.get(i) );
+                interfaz.Set_MensajesUsuario_Conf( "No se detecto ninguna version de java en el equipo o java esta mal configurado" );
             }
         }else
         {
-            interfaz.Set_MensajesUsuario_Conf( "No se detecto ninguna version de java en el equipo o java esta mal configurado" );
+            int input = JOptionPane.showOptionDialog(null, "No hay niguna version de java disponible", "Info ",JOptionPane.CLOSED_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+            if( input == JOptionPane.OK_OPTION ){
+                System.exit(0);//Fin Programa
+            }
         }
- 
+        
         return 0;
     }
     
