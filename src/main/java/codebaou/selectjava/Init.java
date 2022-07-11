@@ -5,6 +5,7 @@ import codebaou.sistema.pluginsimple.Plugins;
 import codebaou.sistema.pluginsimple.Plugin;
 import codebaou.sistema.consola.Windows_System;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -18,6 +19,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 /** 
 * Esta aplicacion se basa en modificar la configuracion del jdk o jre en el sistema o
@@ -35,8 +46,8 @@ import javax.swing.JOptionPane;
 */
 public class Init {
     
-    final static String SISTEMA = System.getProperty( "os.name" ).toLowerCase();
-  
+    private  final float versionAplicacion     = 1.2f;
+    final static String SISTEMA                = System.getProperty( "os.name" ).toLowerCase();
     public static Plugins plugins;
     
     public static String dataJDKJRE; //Seleccion Version Java 
@@ -53,12 +64,14 @@ public class Init {
             //CON PERMISOS DE ADMINISTRADOR
             Init init          = new Init();
             Interfaz interfaz  = new Interfaz( init );
-
+            
+            interfaz.SetVersionPrograma( Float.toString( Init.Get_VersionXMLPOM() ) );
+            
             dataJDKJRE         = null;
             dataAccion         = null;
             dataError          = null;
 
-            File javas = new File("javas");
+            File javas    = new File("javas");
             File pluginsf = new File("plugins");
 
             if( javas.exists() == false ){
@@ -90,14 +103,15 @@ public class Init {
 
             interfaz.setVisible( true );
         }
+        
         else
+            
         {
             //SIN PERMISOS DE ADMINISTRADOR
             int input = JOptionPane.showOptionDialog(null, "Se necesitan permisos de administrador para que la aplicacion funcione", "Info ",JOptionPane.CLOSED_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
             if( input == JOptionPane.OK_OPTION ){
                 System.exit(0);//Fin Programa
-            }
-            
+            } 
         }
     }
    
@@ -211,7 +225,6 @@ public class Init {
                     return pluginAccion.PLUGIN.MensajeCode( ExecPluginMethod( pluginAccion ) );
                 }
             } 
-         
         }
         
         return "error no identificado";
@@ -286,25 +299,17 @@ public class Init {
         interfaz.Limpia_Mensajes_Conf();
         interfaz.Set_MensajesUsuario_Conf( System.getProperty( "os.name" ) );
         ArrayList<String> jdkinfo = Windows_System.Get_Version_Java_System();
-        
-        if( jdkinfo != null ){
-            if( jdkinfo.size() > 0 ){
-                for( int i=0; i<jdkinfo.size(); i++ )
-                {
-                    interfaz.Set_MensajesUsuario_Conf( jdkinfo.get(i) );
-                }
-            }else
+
+        if( jdkinfo.size() > 0 ){
+            for( int i=0; i<jdkinfo.size(); i++ )
             {
-                interfaz.Set_MensajesUsuario_Conf( "No se detecto ninguna version de java en el equipo o java esta mal configurado" );
+                interfaz.Set_MensajesUsuario_Conf( jdkinfo.get(i) );
             }
         }else
         {
-            int input = JOptionPane.showOptionDialog(null, "No hay niguna version de java disponible", "Info ",JOptionPane.CLOSED_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-            if( input == JOptionPane.OK_OPTION ){
-                System.exit(0);//Fin Programa
-            }
+            interfaz.Set_MensajesUsuario_Conf( "No se detecto ninguna version de java en el equipo o java esta mal configurado" );
         }
-        
+
         return 0;
     }
     
@@ -316,5 +321,36 @@ public class Init {
        
         interfaz.Set_MensajesUsuario_Conf("\n jarfile_");
         interfaz.Set_MensajesUsuario_Conf( ""+Windows_System.Get_Info_JarFile().replace("jarfile=","").replace(" ","") );
+    }
+    
+    /** Lee en pom.xml y indica la version en la interfaz */
+    private static float Get_VersionXMLPOM(){
+        
+        float f        = 0f;
+        File pom       = new File("pom.xml");
+        String version = "";
+        
+        try {
+            DocumentBuilderFactory factoryXML   = DocumentBuilderFactory.newInstance();//Cramos una instancia builder
+            DocumentBuilder builder             = factoryXML.newDocumentBuilder();// Objecto que permite leer archivo xml
+            Document documento                  = builder.parse( pom );//Le pasamos archivo xml (File)
+            documento.getDocumentElement().normalize(); //Ordena los elmentos para una lectura mas rapida (Mejora el rendimiento)
+            //Procesador xml  XPath
+            XPath xpath                         = XPathFactory.newInstance().newXPath();
+            Node versionNode                    = (Node) xpath.evaluate("/project/version", documento, XPathConstants.NODE);
+            version                             = versionNode.getFirstChild().getTextContent();
+            f                                   = Float.parseFloat( version );
+            
+        }catch (ParserConfigurationException ex) {
+            Logger.getLogger(Plugin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (XPathExpressionException ex) {
+            Logger.getLogger(Plugin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) { 
+            Logger.getLogger(Init.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Init.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return f;  
     }
 }

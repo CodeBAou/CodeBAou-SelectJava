@@ -43,6 +43,7 @@ import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /** @author CodeBAou */
 public class Interfaz extends javax.swing.JFrame {   
@@ -63,6 +64,7 @@ public class Interfaz extends javax.swing.JFrame {
     //nombre del jdk que el usuario a selecionad
     private String jdkjre_seleccionado;
     private String jdkjre_aux;
+    private String[] listaVersionesJava;
     
     private Plugin plugin;
     private Fonts fuente;
@@ -115,6 +117,15 @@ public class Interfaz extends javax.swing.JFrame {
         this.Reload_MensajesUsuario_Conf();
     }
     
+    public void SetVersionesJava( String[] lista ){
+        this.listaVersionesJava = lista;
+        this.Reload_Lista_Java_Disponibles(); 
+    }
+    
+    public void SetVersionPrograma( String  version ){
+        this.jLabel_VersionPrograma.setText( version );
+    }
+    
     public void Set_MensajesUsuario_Resultado( String MSG ){
         
         if( MSG != null && MSG != "" )
@@ -139,12 +150,16 @@ public class Interfaz extends javax.swing.JFrame {
     }
 
     /* Carga los nombres de la versiones java disponibles en versiones java disponibles */
-    private void Reload_Lista_Java_Disponibles(){
+    private void Reload_Lista_Java_Disponibles(  ){
         
-        String[] lista = Windows_System.Get_ListaNombre_Java_Disponibles_JRE();
-        
-        for( int i = 0;i<lista.length; i++ ){
-            this.jPanel_Lista_Versiones_Java.add( Create_BTN_Lista_JavasVersions( lista[i] ) );
+        if( this.listaVersionesJava != null ){
+            for( int i = 0; i<this.listaVersionesJava.length; i++ ){
+                this.jPanel_Lista_Versiones_Java.add( Create_BTN_Lista_JavasVersions( this.listaVersionesJava[i] ) );
+            }
+        } else{   
+            
+            int input = JOptionPane.showOptionDialog(null, "No hay niguna version de java disponibles", "Info ",JOptionPane.CLOSED_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+            
         }
     }
     
@@ -301,7 +316,7 @@ public class Interfaz extends javax.swing.JFrame {
         Header = new javax.swing.JPanel();
         Header_title = new javax.swing.JPanel();
         SELECTJAVA = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        jLabel_VersionPrograma = new javax.swing.JLabel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(80, 0), new java.awt.Dimension(32767, 0));
         Header_window = new javax.swing.JPanel();
         jButton_Minimiza = new javax.swing.JButton();
@@ -375,12 +390,12 @@ public class Interfaz extends javax.swing.JFrame {
         SELECTJAVA.setText("SELECTJAVA");
         Header_title.add(SELECTJAVA);
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel3.setText("1.2");
-        jLabel3.setMinimumSize(new java.awt.Dimension(30, 16));
-        jLabel3.setPreferredSize(new java.awt.Dimension(30, 20));
-        Header_title.add(jLabel3);
+        jLabel_VersionPrograma.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel_VersionPrograma.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel_VersionPrograma.setText(" ");
+        jLabel_VersionPrograma.setMinimumSize(new java.awt.Dimension(30, 16));
+        jLabel_VersionPrograma.setPreferredSize(new java.awt.Dimension(30, 20));
+        Header_title.add(jLabel_VersionPrograma);
         Header_title.add(filler1);
 
         Header.add(Header_title);
@@ -828,7 +843,6 @@ public class Interfaz extends javax.swing.JFrame {
         else
             
         {
-            
             this.Mensajes_Resultado.add( "Se ha cambiado a " + this.jdkjre_seleccionado + " para " + this.accion_seleccionada );
             
             String resCom = this.init.Execute();
@@ -973,7 +987,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JButton jButton_Minimiza;
     private javax.swing.JButton jButton_close;
     private javax.swing.JButton jButton_maximiza;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel_VersionPrograma;
     private javax.swing.JLabel jLabel_alerta;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

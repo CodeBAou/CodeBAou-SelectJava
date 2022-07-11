@@ -24,7 +24,7 @@ public class Fonts {
 
     public Fonts(){
         
-        String OxygenMonoRegularpath  = ".\\src\\main\\java\\FontsJavaSelect\\OxygenMono-Regular.ttf";
+        String OxygenMonoRegularpath  = ".\\src\\OxygenMono-Regular.ttf";
         try {
             inputRubikMoonrocks     = new BufferedInputStream( new FileInputStream(OxygenMonoRegularpath) );
             fOxygenMonoRegularFont  = Font.createFont(Font.TRUETYPE_FONT, inputRubikMoonrocks);   
