@@ -1,2 +1,2 @@
 # CodeBAou-SelectJava
-Programa para cambiar la version de java en un equipo windows de forma rapida y grafica
+Programa para administrar distintas versiones de java en un equipo windows de forma rapida..
