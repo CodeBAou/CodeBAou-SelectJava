@@ -16,6 +16,8 @@ import java.util.Vector;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /** 
 * Esta aplicacion se basa en modificar la configuracion del jdk o jre en el sistema o
@@ -47,30 +49,57 @@ public class Init {
 
     public static void main(String[] args) {
         
-        Init init          = new Init();
-        Interfaz interfaz  = new Interfaz( init );
-        
-        dataJDKJRE         = null;
-        dataAccion         = null;
-        dataError          = null;
-        
-        Plugin[] pluginAll = init.Get_PluginsArr(); //Carga de Plugins
+        if( Windows_System.Get_permisoAdministrador() ){
+            //CON PERMISOS DE ADMINISTRADOR
+            Init init          = new Init();
+            Interfaz interfaz  = new Interfaz( init );
 
-        //Carga de plugins
-        if( pluginAll != null )
-        {
-            plugins = new Plugins(pluginAll);
-            interfaz.Set_Buttons_Lista_Plugins( plugins.Get_PluginArr() );
-            interfaz.Reload_Lista_Plugins();  
+            dataJDKJRE         = null;
+            dataAccion         = null;
+            dataError          = null;
+
+            File javas = new File("javas");
+            File pluginsf = new File("plugins");
+
+            if( javas.exists() == false ){
+                javas.mkdir();
+            }
+
+            if( pluginsf.exists() == false ){
+                pluginsf.mkdir();
+            }
+
+            javas    = null;
+            pluginsf = null;
+
+            Plugin[] pluginAll = init.Get_PluginsArr(); //Carga de Plugins
+
+            //Carga de plugins
+            if( pluginAll != null )
+            {
+                plugins = new Plugins(pluginAll);
+                interfaz.Set_Buttons_Lista_Plugins( plugins.Get_PluginArr() );
+                interfaz.Reload_Lista_Plugins();  
+            }
+            else
+            {
+                plugins = new Plugins();
+            }  
+
+            Execute_Get_Info( init, interfaz );
+
+            interfaz.setVisible( true );
         }
         else
         {
-            plugins = new Plugins();
-        }  
-
-        Execute_Get_Info( init, interfaz );
-        
-        interfaz.setVisible( true );
+           
+            //SIN PERMISOS DE ADMINISTRADOR
+            int input = JOptionPane.showOptionDialog(null, "Se necesitan permisos de administrador para que la aplicacion funcione", "Info ",JOptionPane.CLOSED_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+            if(input == JOptionPane.OK_OPTION ){
+                System.exit(0);//Fin Programa
+            }
+            
+        }
     }
    
     //Se le pasa la version de java que se ha seleccionado y la accion que se debe ejecutar

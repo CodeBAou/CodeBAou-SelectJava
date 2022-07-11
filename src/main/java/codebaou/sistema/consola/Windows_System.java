@@ -256,7 +256,7 @@ public class Windows_System {
         final String java_Home_c     = "setx /M JAVA_HOME "; // '"' RUTA '"'
         final String java_JRE        = "setx /M JRE_HOME "; // '"' RUTA '"'
         final String java_path       = "setx /M path ";  // '"' %JRE_BIN%\bin ; %JAVA_HOME%\bin; '"'
-   
+        
         //Variable de entorno path
         ArrayList<String> paths      = Filtro_Res_terminal( Set_Comando_Terminal( new String[]{"echo %path%"} ) );
         String[] valoresPaths        = paths.get(0).split(";");
@@ -284,11 +284,10 @@ public class Windows_System {
         
         /** MODIFICAMOS LAS VARIABLES DE ENTORNO <JAVA_JRE> O <JAVA_HOME> DEPENDE SI EL PARAMETRO path
         * CONTIENE UNA JDK O JRE EN LA RUTA  Y SE CREA LA RUTA PARA LA VARIABLE DE ENTORNO path */     
-        
         if( path.toLowerCase().contains( "jre" ) )              //JRE_HOME
         {
             String varEJRE        = "setx /M JRE_HOME " + '"' + path + '"';
-            // Ejecucion comando ( variable JAVA_JRE )
+            //Ejecucion comando ( variable JAVA_JRE )
             ArrayList<String> aux = Filtro_Res_terminal( Set_Comando_Terminal( new String[]{ varEJRE } ) ) ;
             String auxresult      =  "No se ha podido modificar la variable JRE_HOME";
             
@@ -331,7 +330,8 @@ public class Windows_System {
         {
             comando += pathsNuevo.get(i)+";";    
         }
-        comando += path+";";  //Path de java
+        
+        comando += path+"\\bin;";  //Path de java
         comando += '"';
         
         //Ejecucion comando
@@ -396,5 +396,31 @@ public class Windows_System {
             }
         }      
         return res;
+    }
+    
+    //Devuelve true si la aplicacion tiene permiso de administrador
+    public static Boolean Get_permisoAdministrador(){
+        
+        boolean permiso = false;
+        File f          = new File( "C:\\" + "javaSelectAux.cmd" );
+        
+        if( f.exists() == false ){ 
+            try {
+                if( f.createNewFile() ) {
+                    System.out.println("Se creo el fichero");
+                    permiso = true;
+                    f.delete();
+                }else{
+                     System.out.println("No se ha podido crear el fichero ");
+                     permiso = false;
+                }
+            } catch (IOException ex) {
+                permiso = false;
+            }
+        }
+        
+       f = null;
+        
+        return permiso;
     }
 }

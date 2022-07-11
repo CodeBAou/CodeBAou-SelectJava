@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>codebaou</groupId>
     <artifactId>SelectJava</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,6 +16,7 @@
     <name>codebaou_selectjava</name>
     
     <dependencies>
+        
         <!-- Dependencia Interfaz I_Plugin -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -23,18 +24,23 @@
             <version>3.12.0</version>
             <type>jar</type>
         </dependency>
+        
         <dependency>
             <groupId>codebaou.interfaces</groupId>
             <artifactId>I_Plugin</artifactId>
             <version>1.0</version>
         </dependency>
+        
         <dependency>
             <groupId>plugins</groupId>
             <artifactId>NETBEANS</artifactId>
             <version>1.0</version>
             <type>jar</type>
         </dependency>
+        
     </dependencies>
+    
+    
     
     <description>Esta aplicacion permite instalar y cambiar de forma rápida distintas versiones 
 de java. A continuacion se listan la funciones que puede realizar:
@@ -50,5 +56,31 @@ de java. A continuacion se listan la funciones que puede realizar:
 
 
 			codebaou
-	</description>
+</description>
+        
+        
+        
+        <!-- Configuracion para contruccion del jar -->
+
+        <build>
+            <plugins>
+               <plugin>
+                   
+                   <groupId>org.apache.maven.plugins</groupId> 
+                   <artifactId>maven-jar-plugin</artifactId> <!-- plugin maven-jar-plugin -->
+                   <version>3.2.0</version>
+
+                   <configuration>
+                       <archive>
+                           <index>true</index>
+                           <manifest>
+                               <mainClass>codebaou.selectjava.Init</mainClass>  <!--recuerda que aqui va tu clase principal-->
+                           </manifest> 
+                       </archive>
+                   </configuration>
+                   
+               </plugin>   
+            </plugins>
+        </build>
+    
 </project>

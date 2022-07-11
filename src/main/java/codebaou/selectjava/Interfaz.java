@@ -377,7 +377,7 @@ public class Interfaz extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel3.setText("1.0");
+        jLabel3.setText("1.1");
         jLabel3.setMinimumSize(new java.awt.Dimension(30, 16));
         jLabel3.setPreferredSize(new java.awt.Dimension(30, 20));
         Header_title.add(jLabel3);
