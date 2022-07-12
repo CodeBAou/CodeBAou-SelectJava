@@ -1,2 +1,4 @@
 # CodeBAou-SelectJava
-Programa para administrar distintas versiones de java en un equipo windows de forma rapida..
+Ahora puedes cambiar la maquina virtual de java a otra version con un click para pruebas.
+Se pueden ampliar las funcionalidades a traves de un plugin.
+
